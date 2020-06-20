@@ -1,6 +1,6 @@
 package com.nemov.squarerepos.di
 
-import com.nemov.squarerepos.ui.user.UserFragment
+import com.nemov.squarerepos.ui.ReposFragment
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -9,5 +9,5 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
-    abstract fun contributeUserFragment(): UserFragment
+    abstract fun contributeUserFragment(): ReposFragment
 }

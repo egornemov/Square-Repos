@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.nemov.squarerepos.api.GithubService
 import com.nemov.squarerepos.db.GithubDb
 import com.nemov.squarerepos.db.RepoDao
-import com.nemov.squarerepos.db.UserDao
 import com.nemov.squarerepos.util.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -33,12 +32,6 @@ class AppModule {
             .databaseBuilder(app, GithubDb::class.java, "github.db")
             .fallbackToDestructiveMigration()
             .build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideUserDao(db: GithubDb): UserDao {
-        return db.userDao()
     }
 
     @Singleton

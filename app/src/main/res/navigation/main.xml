@@ -16,12 +16,12 @@
   -->
 <navigation xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    app:startDestination="@id/userFragment">
+    app:startDestination="@id/reposFragment">
 
     <fragment
-        android:id="@+id/userFragment"
-        android:name="com.nemov.squarerepos.ui.user.UserFragment"
-        android:label="UserFragment" >
+        android:id="@+id/reposFragment"
+        android:name="com.nemov.squarerepos.ui.ReposFragment"
+        android:label="ReposFragment" >
         <argument
             android:name="login"
             android:defaultValue="square"

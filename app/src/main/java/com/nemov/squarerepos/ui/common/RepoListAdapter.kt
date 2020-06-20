@@ -15,34 +15,27 @@ import com.nemov.squarerepos.vo.Repo
  */
 class RepoListAdapter(
     private val dataBindingComponent: DataBindingComponent,
-    appExecutors: AppExecutors,
-    private val showFullName: Boolean
+    appExecutors: AppExecutors
 ) : DataBoundListAdapter<Repo, RepoItemBinding>(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<Repo>() {
-        override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean {
-            return oldItem.owner == newItem.owner
-                    && oldItem.name == newItem.name
-        }
+        override fun areItemsTheSame(oldItem: Repo, newItem: Repo) =
+            oldItem.name == newItem.name
 
-        override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean {
-            return oldItem.description == newItem.description
+        override fun areContentsTheSame(oldItem: Repo, newItem: Repo) =
+            oldItem.description == newItem.description
                     && oldItem.stars == newItem.stars
-        }
     }
 ) {
 
-    override fun createBinding(parent: ViewGroup): RepoItemBinding {
-        val binding = DataBindingUtil.inflate<RepoItemBinding>(
+    override fun createBinding(parent: ViewGroup): RepoItemBinding =
+        DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.repo_item,
             parent,
             false,
             dataBindingComponent
         )
-        binding.showFullName = showFullName
-        return binding
-    }
 
     override fun bind(binding: RepoItemBinding, item: Repo) {
         binding.repo = item

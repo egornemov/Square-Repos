@@ -18,11 +18,6 @@ abstract class RepoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertRepos(repositories: List<Repo>)
 
-    @Query(
-        """
-        SELECT * FROM Repo
-        WHERE owner_login = :owner
-        ORDER BY stars DESC"""
-    )
-    abstract fun loadRepositories(owner: String): LiveData<List<Repo>>
+    @Query("SELECT * FROM Repo ORDER BY stars DESC")
+    abstract fun loadRepositories(): LiveData<List<Repo>>
 }

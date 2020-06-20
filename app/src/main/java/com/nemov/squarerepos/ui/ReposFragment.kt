@@ -1,6 +1,5 @@
-package com.nemov.squarerepos.ui.user
+package com.nemov.squarerepos.ui
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.nemov.squarerepos.AppExecutors
 import com.nemov.squarerepos.R
 import com.nemov.squarerepos.binding.FragmentDataBindingComponent
@@ -28,7 +23,7 @@ import com.nemov.squarerepos.util.autoCleared
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class UserFragment : Fragment(), Injectable {
+class ReposFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject
@@ -37,10 +32,10 @@ class UserFragment : Fragment(), Injectable {
     var binding by autoCleared<UserFragmentBinding>()
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
-    private val userViewModel: UserViewModel by viewModels {
+    private val reposViewModel: ReposViewModel by viewModels {
         viewModelFactory
     }
-    private val params by navArgs<UserFragmentArgs>()
+    private val params by navArgs<ReposFragmentArgs>()
     private var adapter by autoCleared<RepoListAdapter>()
 
     override fun onCreateView(
@@ -56,38 +51,23 @@ class UserFragment : Fragment(), Injectable {
         )
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
-                userViewModel.retry()
+                reposViewModel.retry()
             }
         }
         binding = dataBinding
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
-        // When the image is loaded, set the image request listener to start the transaction
-        binding.imageRequestListener = object: RequestListener<Drawable> {
-            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                startPostponedEnterTransition()
-                return false
-            }
-
-            override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                startPostponedEnterTransition()
-                return false
-            }
-        }
         // Make sure we don't wait longer than a second for the image request
         postponeEnterTransition(1, TimeUnit.SECONDS)
         return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        userViewModel.setLogin(params.login)
-        binding.args = params
-
-        binding.user = userViewModel.user
+        reposViewModel.setLogin(params.login)
+        binding.repos = reposViewModel.repositories
         binding.lifecycleOwner = viewLifecycleOwner
         val rvAdapter = RepoListAdapter(
             dataBindingComponent = dataBindingComponent,
-            appExecutors = appExecutors,
-            showFullName = false
+            appExecutors = appExecutors
         )
         binding.repoList.adapter = rvAdapter
         this.adapter = rvAdapter
@@ -95,7 +75,7 @@ class UserFragment : Fragment(), Injectable {
     }
 
     private fun initRepoList() {
-        userViewModel.repositories.observe(viewLifecycleOwner, Observer { repos ->
+        reposViewModel.repositories.observe(viewLifecycleOwner, Observer { repos ->
             adapter.submitList(repos?.data)
         })
     }
