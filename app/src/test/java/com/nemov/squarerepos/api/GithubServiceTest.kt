@@ -3,6 +3,7 @@ package com.nemov.squarerepos.api
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nemov.squarerepos.util.LiveDataCallAdapterFactory
 import com.nemov.squarerepos.util.getOrAwaitValue
+import com.nemov.squarerepos.vo.Repo
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.Okio
@@ -51,17 +52,30 @@ class GithubServiceTest {
         val request = mockWebServer.takeRequest()
         assertThat(request.path, `is`("/orgs/square/repos"))
 
-        assertThat(repos.size, `is`(30))
+        assertThat(repos.size, `is`(3))
 
-        val repo = repos[0]
-        assertThat(repo.name, `is`("yajl-objc"))
-        assertThat(repo.description, `is`("Objective-C bindings for YAJL (Yet Another JSON Library) C library"))
-        assertThat(repo.stars, `is`(8))
+        val data = listOf(
+            Repo(
+                "yajl-objc",
+                "Objective-C bindings for YAJL (Yet Another JSON Library) C library",
+                8
+            ),
+            Repo(
+                "simplerrd",
+                "SimpleRRD provides a simple Ruby interface for creating graphs with RRD",
+                20
+            ),
+            Repo(
+                "gh-unit",
+                "Test Framework for Objective-C",
+                18
+            )
+        )
 
-        val repo2 = repos[1]
-        assertThat(repo2.name, `is`("simplerrd"))
-        assertThat(repo2.description, `is`("SimpleRRD provides a simple Ruby interface for creating graphs with RRD"))
-        assertThat(repo2.stars, `is`(20))
+        data.forEachIndexed { index, target ->
+            val repo = repos[index]
+            assertThat(repo, `is`(target))
+        }
     }
 
     private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {

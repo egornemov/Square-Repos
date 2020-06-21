@@ -13,24 +13,26 @@ import javax.inject.Inject
 
 @OpenForTesting
 class ReposViewModel @Inject constructor(repoRepository: RepoRepository) : ViewModel() {
-    private val organization = MutableLiveData<String?>()
-    val repositories: LiveData<Resource<List<Repo>>> = organization.switchMap { login ->
-        if (login == null) {
+    private val _organization = MutableLiveData<String?>()
+    val organization: LiveData<String?>
+        get() = _organization
+    val repositories: LiveData<Resource<List<Repo>>> = _organization.switchMap {
+        if (it == null) {
             AbsentLiveData.create()
         } else {
-            repoRepository.loadRepos(login)
+            repoRepository.loadRepos(it)
         }
     }
 
     fun setLogin(login: String?) {
-        if (organization.value != login) {
-            organization.value = login
+        if (_organization.value != login) {
+            _organization.value = login
         }
     }
 
     fun retry() {
-        organization.value?.let {
-            organization.value = it
+        _organization.value?.let {
+            _organization.value = it
         }
     }
 }
