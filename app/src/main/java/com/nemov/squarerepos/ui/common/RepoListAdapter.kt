@@ -1,6 +1,5 @@
 package com.nemov.squarerepos.ui.common
 
-import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
@@ -13,10 +12,7 @@ import com.nemov.squarerepos.vo.Repo
 /**
  * A RecyclerView adapter for [Repo] class.
  */
-class RepoListAdapter(
-    private val dataBindingComponent: DataBindingComponent,
-    appExecutors: AppExecutors
-) : DataBoundListAdapter<Repo, RepoItemBinding>(
+class RepoListAdapter(appExecutors: AppExecutors) : DataBoundListAdapter<Repo, RepoItemBinding>(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<Repo>() {
         override fun areItemsTheSame(oldItem: Repo, newItem: Repo) =
@@ -33,8 +29,7 @@ class RepoListAdapter(
             LayoutInflater.from(parent.context),
             R.layout.repo_item,
             parent,
-            false,
-            dataBindingComponent
+            false
         )
 
     override fun bind(binding: RepoItemBinding, item: Repo) {

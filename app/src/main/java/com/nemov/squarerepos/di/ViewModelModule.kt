@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 import com.nemov.squarerepos.ui.ReposViewModel
-import com.nemov.squarerepos.viewmodel.GithubViewModelFactory
+import com.nemov.squarerepos.viewmodel.SquareReposViewModelFactory
 
 import dagger.Binds
 import dagger.Module
@@ -19,5 +19,5 @@ abstract class ViewModelModule {
     abstract fun bindReposViewModel(reposViewModel: ReposViewModel): ViewModel
 
     @Binds
-    abstract fun bindViewModelFactory(factory: GithubViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(factory: SquareReposViewModelFactory): ViewModelProvider.Factory
 }

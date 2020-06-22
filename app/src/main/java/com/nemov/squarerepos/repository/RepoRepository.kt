@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.nemov.squarerepos.AppExecutors
 import com.nemov.squarerepos.api.GithubService
 import com.nemov.squarerepos.db.RepoDao
-import com.nemov.squarerepos.testing.OpenForTesting
 import com.nemov.squarerepos.util.RateLimiter
 import com.nemov.squarerepos.vo.Repo
 import com.nemov.squarerepos.vo.Resource
@@ -20,7 +19,6 @@ import javax.inject.Singleton
  * Repository - type of this class.
  */
 @Singleton
-@OpenForTesting
 class RepoRepository @Inject constructor(
     private val appExecutors: AppExecutors,
     private val repoDao: RepoDao,

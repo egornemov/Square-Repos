@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,8 +13,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.nemov.squarerepos.AppExecutors
 import com.nemov.squarerepos.R
-import com.nemov.squarerepos.binding.FragmentDataBindingComponent
-import com.nemov.squarerepos.databinding.UserFragmentBinding
+import com.nemov.squarerepos.databinding.ReposFragmentBinding
 import com.nemov.squarerepos.di.Injectable
 import com.nemov.squarerepos.ui.common.RepoListAdapter
 import com.nemov.squarerepos.ui.common.RetryCallback
@@ -29,8 +27,7 @@ class ReposFragment : Fragment(), Injectable {
     @Inject
     lateinit var appExecutors: AppExecutors
 
-    var binding by autoCleared<UserFragmentBinding>()
-    var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+    var binding by autoCleared<ReposFragmentBinding>()
 
     private val reposViewModel: ReposViewModel by viewModels {
         viewModelFactory
@@ -42,12 +39,11 @@ class ReposFragment : Fragment(), Injectable {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val dataBinding = DataBindingUtil.inflate<UserFragmentBinding>(
+        val dataBinding = DataBindingUtil.inflate<ReposFragmentBinding>(
             inflater,
-            R.layout.user_fragment,
+            R.layout.repos_fragment,
             container,
-            false,
-            dataBindingComponent
+            false
         )
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
@@ -65,10 +61,7 @@ class ReposFragment : Fragment(), Injectable {
         reposViewModel.setLogin(params.login)
         binding.repos = reposViewModel.repositories
         binding.lifecycleOwner = viewLifecycleOwner
-        val rvAdapter = RepoListAdapter(
-            dataBindingComponent = dataBindingComponent,
-            appExecutors = appExecutors
-        )
+        val rvAdapter = RepoListAdapter(appExecutors)
         binding.repoList.adapter = rvAdapter
         this.adapter = rvAdapter
         initRepoList()
